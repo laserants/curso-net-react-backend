@@ -1,6 +1,10 @@
 ﻿using Curso_Backend_SEGEPLAN.DataContext;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace Curso_Backend_SEGEPLAN
 {
@@ -20,6 +24,48 @@ namespace Curso_Backend_SEGEPLAN
 
             services.AddDbContextPool<ApplicationDbContext>(options => options.UseMySql(mysqlConnectionSTring, ServerVersion.AutoDetect(mysqlConnectionSTring)));
 
+
+            // JWT Configuration
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["JwtKey"])),
+                        ClockSkew = TimeSpan.Zero
+                    });
+
+            // Configure Swagger
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc("v1", new OpenApiInfo { Title = "Curso Backend SEGEPLAN", Version = "v1" });
+                config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header
+                });
+
+                config.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme()
+                        {
+                            Reference = new OpenApiReference()
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+            });
+
             // Add services to the container.
             services.AddControllers();
 
@@ -35,6 +81,15 @@ namespace Curso_Backend_SEGEPLAN
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.Map("/ruta1", app =>
+            {
+                app.Run(async context =>
+                {
+                    await context.Response.WriteAsync("Este es mi propio middleware");
+                });
+            });
+
             // Configure the HTTP request pipeline.
             if (env.IsDevelopment())
             {

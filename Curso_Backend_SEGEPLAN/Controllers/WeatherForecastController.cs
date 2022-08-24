@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Curso_Backend_SEGEPLAN.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -19,6 +22,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
@@ -31,6 +35,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
         }
 
         [HttpGet("endpoint2")]
+        [AllowAnonymous]
         public int GetInt()
         {
             return 100;
