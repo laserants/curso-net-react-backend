@@ -1,4 +1,5 @@
 ﻿using Curso_Backend_SEGEPLAN.DataContext;
+using Curso_Backend_SEGEPLAN.Services.Proyectos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +78,9 @@ namespace Curso_Backend_SEGEPLAN
             services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultTokenProviders();
+
+            // Configure custom services-handlers
+            services.AddTransient<IProyectosHandler, ProyectosHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

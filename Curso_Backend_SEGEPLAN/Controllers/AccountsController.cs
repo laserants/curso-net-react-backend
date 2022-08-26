@@ -1,5 +1,6 @@
 ﻿using Curso_Backend_SEGEPLAN.DTOs.Requests;
 using Curso_Backend_SEGEPLAN.DTOs.Responses;
+using Curso_Backend_SEGEPLAN.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -43,7 +44,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
             }
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet("{userId}")]        
         public async Task<ActionResult<IdentityUser>> GetById([FromRoute] string userId)
         {
             try
@@ -57,7 +58,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
             }
             catch (Exception exception)
             {
-                return BadRequest(exception.Message);
+                return exception.ConvertToActionResult(HttpContext);
             }
         }
 

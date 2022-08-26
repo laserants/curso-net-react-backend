@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Curso_Backend_SEGEPLAN.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Curso_Backend_SEGEPLAN.DataContext
@@ -7,5 +8,7 @@ namespace Curso_Backend_SEGEPLAN.DataContext
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {}
+
+        public DbSet<Proyecto> Proyectos { get; set; }
     }
 }

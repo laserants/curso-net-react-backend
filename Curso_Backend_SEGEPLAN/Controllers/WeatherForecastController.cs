@@ -36,9 +36,38 @@ namespace Curso_Backend_SEGEPLAN.Controllers
 
         [HttpGet("endpoint2")]
         [AllowAnonymous]
-        public int GetInt()
+        public ActionResult<int[]> GetInt()
         {
-            return 100;
+            int[] listaEnteros = new int[]
+            {
+                1, 
+                2, 
+                3,
+                4,
+                5
+            };
+
+            //return Ok(listaEnteros.Where(x => x < 3).ToList());
+
+            int cantidadItemsBorrar = 0;
+
+            for (int i = 0; i < listaEnteros.Length; i++)
+            {
+                if (listaEnteros[i] > 2)
+                {
+                    listaEnteros[i] = 0;
+                    cantidadItemsBorrar++;
+                }
+            }
+
+            int[] nuevoArray = new int[listaEnteros.Length - cantidadItemsBorrar];
+
+            for (int i = 0; i < nuevoArray.Length; i++)
+            {
+                nuevoArray[i] = listaEnteros[i];
+            }
+
+            return Ok(nuevoArray.ToList());
         }
     }
 }
