@@ -10,5 +10,6 @@ namespace Curso_Backend_SEGEPLAN.DataContext
         {}
 
         public DbSet<Proyecto> Proyectos { get; set; }
+        public DbSet<Actividad> Actividades { get; set; }
     }
 }

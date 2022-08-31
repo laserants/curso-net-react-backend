@@ -12,7 +12,7 @@ namespace Curso_Backend_SEGEPLAN.Services.Proyectos
 
         public async Task<Proyecto[]> GetAsync()
         {
-            var proyectosDB = this._context.Proyectos.ToArray();
+            var proyectosDB = this._context.Proyectos.Include(x => x.Actividades).ToArray();
 
             return await Task.FromResult(proyectosDB);
         }
@@ -43,24 +43,16 @@ namespace Curso_Backend_SEGEPLAN.Services.Proyectos
 
         public async Task<bool> DeleteAsync(int proyectoId)
         {
-            var existeRegistro = await this.ExistRecordAsync(proyectoId);
-
-            if(!existeRegistro)
-                return false;
-
-            var proyectoEliminar = new Proyecto { ProyectoID = proyectoId };
+           var proyectoEliminar = new Proyecto { ProyectoID = proyectoId };
 
             this._context.Proyectos.Remove(proyectoEliminar);
-            await this._context.SaveChangesAsync();
+            var rowAffected = await this._context.SaveChangesAsync();
 
-            return true;
+            return rowAffected > 0;
         }
 
         public async Task<bool> ExistRecordAsync(int proyectoId)
         {
-            if (proyectoId <= 0)
-                throw new ArgumentException("Id del proyecto invalido");
-
             bool existeRegistro = await this._context.Proyectos.AnyAsync(x => x.ProyectoID == proyectoId);
 
             return existeRegistro;

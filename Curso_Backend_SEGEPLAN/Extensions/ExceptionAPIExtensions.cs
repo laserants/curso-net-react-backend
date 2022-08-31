@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Curso_Backend_SEGEPLAN.Extensions
 {
@@ -6,7 +7,7 @@ namespace Curso_Backend_SEGEPLAN.Extensions
     {
         public static ActionResult ConvertToActionResult(this Exception exception, HttpContext context)
         {
-            var problemsDetails = new ProblemDetails()
+            var problemDetails = new ProblemDetails()
             {
                 Detail = exception.ToString(),
                 Instance = context?.Request.Path,
@@ -16,40 +17,55 @@ namespace Curso_Backend_SEGEPLAN.Extensions
             switch (exception)
             {
                 case ArgumentException _:
-                    problemsDetails.Status = 400;
-                    problemsDetails.Type = "https://httpstatuses.com/400";
+                    problemDetails.Status = 400;
+                    problemDetails.Type = "https://httpstatuses.com/400";
 
-                    return new BadRequestObjectResult(problemsDetails);
+                    return new BadRequestObjectResult(problemDetails);
+
+                case DbUpdateException _:
+                    problemDetails.Status = 400;
+                    problemDetails.Type = "https://httpstatuses.com/400";
+
+                    return new BadRequestObjectResult(problemDetails);
 
                 case UnauthorizedAccessException _:
-                    problemsDetails.Status = 401;
-                    problemsDetails.Type = "https://httpstatuses.com/401";
+                    problemDetails.Status = 401;
+                    problemDetails.Type = $"https://httpstatuses.com/401";
 
-                    return new UnauthorizedObjectResult(problemsDetails);
+                    return new UnauthorizedObjectResult(problemDetails);
+
+                case InvalidOperationException _:
+                    problemDetails.Status = 500;
+                    problemDetails.Type = $"https://httpstatuses.com/500";
+
+                    return new ObjectResult(problemDetails)
+                    {
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
 
                 case HttpRequestException _:
-                    problemsDetails.Status = 500;
-                    problemsDetails.Type = "https://httpstatuses.com/500";
+                    problemDetails.Status = 500;
+                    problemDetails.Type = $"https://httpstatuses.com/500";
 
-                    if (problemsDetails.Title.ToLower().Contains("Operation timed out"))
+                    if (problemDetails.Title.ToLower().Contains("Operation timed out"))
                     {
-                        problemsDetails.Status = 408;
-                        problemsDetails.Type = "https://httpstatuses.com/408";
-                        problemsDetails.Title = "Hay un problema con su conexión, porfavor intente más tarde..";
+                        problemDetails.Status = 408;
+                        problemDetails.Type = $"https://httpstatuses.com/408";
+                        problemDetails.Title = "There is a connection problem, please try again later..";
 
-                        return new ObjectResult(problemsDetails)
+                        return new ObjectResult(problemDetails)
                         {
                             StatusCode = StatusCodes.Status408RequestTimeout
                         };
                     }
 
-                    return new ObjectResult(problemsDetails)
+                    return new ObjectResult(problemDetails)
                     {
                         StatusCode = StatusCodes.Status500InternalServerError
                     };
             }
 
-            throw new Exception("Error desconocido", exception);
+            throw new Exception("Unexpected error", exception);
         }
     }
 }

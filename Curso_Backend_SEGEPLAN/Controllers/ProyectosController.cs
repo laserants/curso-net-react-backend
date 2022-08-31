@@ -1,21 +1,28 @@
-﻿using Curso_Backend_SEGEPLAN.Entities;
+﻿using AutoMapper;
+using Curso_Backend_SEGEPLAN.DTOs.Proyectos.Request;
+using Curso_Backend_SEGEPLAN.Entities;
 using Curso_Backend_SEGEPLAN.Extensions;
 using Curso_Backend_SEGEPLAN.Services.Proyectos;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Curso_Backend_SEGEPLAN.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ProyectosController : ControllerBase
     {
         private readonly IProyectosHandler _proyectosHandler;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public ProyectosController(IProyectosHandler proyectosHandler, IConfiguration configuration)
+        public ProyectosController(IProyectosHandler proyectosHandler, IConfiguration configuration, IMapper mapper)
         {
             this._proyectosHandler = proyectosHandler;
             this._configuration = configuration;
+            this._mapper = mapper;
         }
 
         [HttpGet]
@@ -55,12 +62,14 @@ namespace Curso_Backend_SEGEPLAN.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Create([FromBody] Proyecto proyecto)
+        public async Task<ActionResult<int>> Create([FromBody] ProyectoCreationRequest proyectoCreationRequest)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
+
+                var proyecto = this._mapper.Map<Proyecto>(proyectoCreationRequest);
 
                 var proyectoCreado = await this._proyectosHandler.CreateAsync(proyecto);
 
@@ -103,7 +112,12 @@ namespace Curso_Backend_SEGEPLAN.Controllers
             try
             {
                 if(proyectoId <= 0)
-                    return BadRequest("El proyecto id es invalido");
+                    throw new ArgumentException("El proyecto id es invalido");
+
+                var existeProyecto = await this._proyectosHandler.ExistRecordAsync(proyectoId);
+
+                if(!existeProyecto)
+                    return NotFound();
 
                 await this._proyectosHandler.DeleteAsync(proyectoId);
 

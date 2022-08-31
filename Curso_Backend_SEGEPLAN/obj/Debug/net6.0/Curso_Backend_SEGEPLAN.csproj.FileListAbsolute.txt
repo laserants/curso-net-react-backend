@@ -46,3 +46,5 @@ D:\source\repos\Curso_Backend\curso-net-react-backend\Curso_Backend_SEGEPLAN\bin
 D:\source\repos\Curso_Backend\curso-net-react-backend\Curso_Backend_SEGEPLAN\bin\Debug\net6.0\MySqlConnector.dll
 D:\source\repos\Curso_Backend\curso-net-react-backend\Curso_Backend_SEGEPLAN\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll
 D:\source\repos\Curso_Backend\curso-net-react-backend\Curso_Backend_SEGEPLAN\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+D:\source\repos\Curso_Backend\curso-net-react-backend\Curso_Backend_SEGEPLAN\bin\Debug\net6.0\AutoMapper.dll
+D:\source\repos\Curso_Backend\curso-net-react-backend\Curso_Backend_SEGEPLAN\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

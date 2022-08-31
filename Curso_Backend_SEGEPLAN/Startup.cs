@@ -1,4 +1,5 @@
 ﻿using Curso_Backend_SEGEPLAN.DataContext;
+using Curso_Backend_SEGEPLAN.Services.Actividades;
 using Curso_Backend_SEGEPLAN.Services.Proyectos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -81,6 +82,10 @@ namespace Curso_Backend_SEGEPLAN
 
             // Configure custom services-handlers
             services.AddTransient<IProyectosHandler, ProyectosHandler>();
+            services.AddTransient<IActividadesHandler, ActividadesHandler>();
+
+            // AutoMapper Configuration
+            services.AddAutoMapper(typeof(Startup));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
