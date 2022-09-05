@@ -3,6 +3,7 @@ using System;
 using Curso_Backend_SEGEPLAN.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Curso_Backend_SEGEPLAN.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220901110455_Adding_Executor_Entity")]
+    partial class Adding_Executor_Entity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,40 +132,6 @@ namespace Curso_Backend_SEGEPLAN.Migrations
                     b.HasKey("ProyectoID");
 
                     b.ToTable("Proyectos");
-                });
-
-            modelBuilder.Entity("Curso_Backend_SEGEPLAN.Entities.ProyectoBeneficiario", b =>
-                {
-                    b.Property<int>("ProyectoID")
-                        .HasColumnType("int")
-                        .HasColumnName("Proyecto_Id");
-
-                    b.Property<int>("BeneficiarioID")
-                        .HasColumnType("int")
-                        .HasColumnName("Beneficiario_Id");
-
-                    b.HasKey("ProyectoID", "BeneficiarioID");
-
-                    b.HasIndex("BeneficiarioID");
-
-                    b.ToTable("ProyectosBeneficiarios");
-                });
-
-            modelBuilder.Entity("Curso_Backend_SEGEPLAN.Entities.ProyectoEjecutor", b =>
-                {
-                    b.Property<int>("ProyectoID")
-                        .HasColumnType("int")
-                        .HasColumnName("Proyecto_Id");
-
-                    b.Property<int>("EjecutorID")
-                        .HasColumnType("int")
-                        .HasColumnName("Ejecutor_Id");
-
-                    b.HasKey("ProyectoID", "EjecutorID");
-
-                    b.HasIndex("EjecutorID");
-
-                    b.ToTable("ProyectosEjecutores");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -365,44 +333,6 @@ namespace Curso_Backend_SEGEPLAN.Migrations
                         .HasForeignKey("ProyectoID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Curso_Backend_SEGEPLAN.Entities.ProyectoBeneficiario", b =>
-                {
-                    b.HasOne("Curso_Backend_SEGEPLAN.Entities.Beneficiario", "Beneficiario")
-                        .WithMany()
-                        .HasForeignKey("BeneficiarioID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Curso_Backend_SEGEPLAN.Entities.Proyecto", "Proyecto")
-                        .WithMany()
-                        .HasForeignKey("ProyectoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Beneficiario");
-
-                    b.Navigation("Proyecto");
-                });
-
-            modelBuilder.Entity("Curso_Backend_SEGEPLAN.Entities.ProyectoEjecutor", b =>
-                {
-                    b.HasOne("Curso_Backend_SEGEPLAN.Entities.Ejecutor", "Ejecutor")
-                        .WithMany()
-                        .HasForeignKey("EjecutorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Curso_Backend_SEGEPLAN.Entities.Proyecto", "Proyecto")
-                        .WithMany()
-                        .HasForeignKey("ProyectoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ejecutor");
-
-                    b.Navigation("Proyecto");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

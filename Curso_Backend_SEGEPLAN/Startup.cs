@@ -1,6 +1,10 @@
 ﻿using Curso_Backend_SEGEPLAN.DataContext;
+using Curso_Backend_SEGEPLAN.InversionOfControlContainer;
 using Curso_Backend_SEGEPLAN.Services.Actividades;
+using Curso_Backend_SEGEPLAN.Services.Beneficiarios;
+using Curso_Backend_SEGEPLAN.Services.Ejecutores;
 using Curso_Backend_SEGEPLAN.Services.Proyectos;
+using Curso_Backend_SEGEPLAN.Services.ProyetosBeneficiarios;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -81,11 +85,21 @@ namespace Curso_Backend_SEGEPLAN
                     .AddDefaultTokenProviders();
 
             // Configure custom services-handlers
-            services.AddTransient<IProyectosHandler, ProyectosHandler>();
-            services.AddTransient<IActividadesHandler, ActividadesHandler>();
+            IoC.AddDependency(services);
 
             // AutoMapper Configuration
             services.AddAutoMapper(typeof(Startup));
+
+            // Add Cors
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -108,6 +122,7 @@ namespace Curso_Backend_SEGEPLAN
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoint =>
