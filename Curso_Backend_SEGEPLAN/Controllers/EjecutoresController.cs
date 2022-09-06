@@ -15,7 +15,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class EjecutoresController : ControllerBase
     {
         private readonly IEjecutoresHandler _ejecutoresHandler;
@@ -34,7 +34,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
         {
             try
             {
-                var actividades = await this._ejecutoresHandler.GetAsync();
+                var actividades = await this._ejecutoresHandler.GetAsync(null, string.Empty);
 
                 return Ok(actividades);
             }
@@ -117,7 +117,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
                 if (ejecutorId <= 0)
                     throw new ArgumentException("ejecutorId es Inválido");
 
-                var existeEjecutor = await this._ejecutoresHandler.ExistRecordAsync(ejecutorId);
+                var existeEjecutor = await this._ejecutoresHandler.ExistRecordAsync(x => x.EjecutorID == ejecutorId);
 
                 if (!existeEjecutor)
                     return NotFound();

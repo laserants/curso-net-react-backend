@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Curso_Backend_SEGEPLAN.DTOs.Actividades.Request;
 using Curso_Backend_SEGEPLAN.DTOs.Beneficiarios.Request;
 using Curso_Backend_SEGEPLAN.Entities;
 using Curso_Backend_SEGEPLAN.Extensions;
-using Curso_Backend_SEGEPLAN.Services.Actividades;
 using Curso_Backend_SEGEPLAN.Services.Beneficiarios;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
