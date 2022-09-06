@@ -11,7 +11,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ProyectosController : ControllerBase
     {
         private readonly IProyectosHandler _proyectosHandler;

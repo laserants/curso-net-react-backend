@@ -97,7 +97,7 @@ namespace Curso_Backend_SEGEPLAN
                 {
                     builder.AllowAnyOrigin()
                            .AllowAnyMethod()
-                           .AllowAnyHeader();
+                           .AllowAnyHeader().WithMethods("PUT", "DELETE", "GET");
                 });
             });
         }
