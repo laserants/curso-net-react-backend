@@ -14,6 +14,7 @@ namespace Curso_Backend_SEGEPLAN.Mapper
         public AdminProjectsProfile()
         {
             CreateMap<ProyectoCreationRequest, Proyecto>();
+            CreateMap<ProyectoUpdateRequest, Proyecto>();
             CreateMap<ActividadCreationRequest, Actividad>();
             CreateMap<ActividadUpdateRequest, Actividad>();
             CreateMap<BeneficiarioCreationRequest, Beneficiario>();

@@ -84,7 +84,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
         }
 
         [HttpPut("{proyectoId:int}")]
-        public async Task<IActionResult> Update([FromRoute] int proyectoId, [FromBody] Proyecto proyecto)
+        public async Task<IActionResult> Update([FromRoute] int proyectoId, [FromBody] ProyectoUpdateRequest proyectoUpdateRequest)
         {
             try
             {
@@ -93,9 +93,10 @@ namespace Curso_Backend_SEGEPLAN.Controllers
                     return BadRequest(ModelState);
                 }
 
-                if (proyectoId != proyecto.ProyectoID)
+                if (proyectoId != proyectoUpdateRequest.ProyectoID)
                     return BadRequest("Proyecto Id de la url no coincide con el proyecto id del body");
 
+                var proyecto = this._mapper.Map<Proyecto>(proyectoUpdateRequest);
                 await this._proyectosHandler.UpdateAsync(proyecto);
 
                 return NoContent();
