@@ -1,14 +1,9 @@
 ﻿using Curso_Backend_SEGEPLAN.Entities;
+using Curso_Backend_SEGEPLAN.Services.BaseService;
 
 namespace Curso_Backend_SEGEPLAN.Services.Proyectos
 {
-    public interface IProyectosHandler
+    public interface IProyectosHandler : IBaseService<Proyecto>
     {
-        Task<Proyecto[]> GetAsync();
-        Task<Proyecto> GetByIdAsync(int proyectoId);
-        Task<int> CreateAsync(Proyecto proyecto);
-        Task UpdateAsync(Proyecto proyecto);
-        Task<bool> DeleteAsync(int proyectoId);
-        Task<bool> ExistRecordAsync(int proyectoId);
     }
 }

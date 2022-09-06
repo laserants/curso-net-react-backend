@@ -30,7 +30,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
         {
             try
             {
-                var proyectos = await this._proyectosHandler.GetAsync();
+                var proyectos = await this._proyectosHandler.GetAsync(null, "Actividades");
 
                 return Ok(proyectos);
             }
@@ -114,7 +114,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
                 if(proyectoId <= 0)
                     throw new ArgumentException("El proyecto id es invalido");
 
-                var existeProyecto = await this._proyectosHandler.ExistRecordAsync(proyectoId);
+                var existeProyecto = await this._proyectosHandler.ExistRecordAsync(x => x.ProyectoID == proyectoId);
 
                 if(!existeProyecto)
                     return NotFound();
