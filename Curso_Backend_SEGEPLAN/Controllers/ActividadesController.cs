@@ -11,7 +11,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ActividadesController : ControllerBase
     {
         private readonly IActividadesHandler _actividadesHandler;
@@ -30,7 +30,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
         {
             try
             {
-                var actividades = await this._actividadesHandler.GetAsync();
+                var actividades = await this._actividadesHandler.GetAsync(null, string.Empty);
 
                 return Ok(actividades);
             }
@@ -113,7 +113,7 @@ namespace Curso_Backend_SEGEPLAN.Controllers
                 if (actividadId <= 0)
                     throw new ArgumentException("ActividadId es Inválido");
 
-                var existeActividad = await this._actividadesHandler.ExistRecordAsync(actividadId);
+                var existeActividad = await this._actividadesHandler.ExistRecordAsync(x => x.ActividadID == actividadId);
 
                 if (!existeActividad)
                     return NotFound();

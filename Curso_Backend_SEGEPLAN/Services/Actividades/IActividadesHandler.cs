@@ -1,14 +1,9 @@
 ﻿using Curso_Backend_SEGEPLAN.Entities;
+using Curso_Backend_SEGEPLAN.Services.BaseService;
 
 namespace Curso_Backend_SEGEPLAN.Services.Actividades
 {
-    public interface IActividadesHandler
+    public interface IActividadesHandler : IBaseService<Actividad>
     {
-        Task<Actividad[]> GetAsync();
-        Task<Actividad> GetByIdAsync(int actividadId);
-        Task<int> CreateAsync(Actividad actividad);
-        Task UpdateAsync(Actividad actividad);
-        Task<bool> DeleteAsync(int actividadId);
-        Task<bool> ExistRecordAsync(int actividadId);
     }
 }
